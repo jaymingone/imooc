@@ -1,7 +1,7 @@
 var express = require('express');/*引入express模块*/
 var port = process.env.PORT || 3000;/*设置端口号为3000或环境变量的值*/
 var app = express();/*创建WEB服务器实例*/
-app.set('views','./views');/*设置视图的根目录*/
+app.set('views','./views/pages');/*设置视图的根目录*/
 app.set('view engine','jade');/*设置默认的模板引擎*/
 app.listen(port);/*监听指定的端口*/
 console.log('imooc started on port' + port);
