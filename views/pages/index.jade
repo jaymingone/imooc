@@ -3,7 +3,7 @@ block content
 	.container
 		.row
 			each item in movies
-				.clo-md-2
+				.col-md-2
 					.thumbnail
 						a(href="/movies/#{item._id}")
 							img(src="#{item.poster}",alt="#{item.title}")
