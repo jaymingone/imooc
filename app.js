@@ -13,7 +13,7 @@ app.set('view engine','jade');/*设置默认的模板引擎*/
 // app.use(express.bodyParser());/*提交的表单数据格式化用到*/
 app.use(express.static(path.join(__dirname,"bower_components")));/*具体设置静态资源的路径位置*/
 // app.use(serveStatic('bower_components');
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({ extended:true }));
 app.use(bodyParser.json());
 app.listen(port);/*监听指定的端口*/
 console.log('imooc started on port' + port);

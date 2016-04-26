@@ -19,7 +19,7 @@ var MovieSchema = new mongoose.Schema({/*创建文档集合*/
 		}
 	}
 })
-MovieSchema.pre('svae',function(next){/*每次存数据之前调用该方法*/
+MovieSchema.pre('save',function(next){/*每次存数据之前调用该方法*/
 	if(this.isNew){
 		this.meta.createAt = this.meta.updateAt = Date.now();
 	}else{
