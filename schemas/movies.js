@@ -1,4 +1,4 @@
-var require('mongoose');/*引入mongoose模块*/
+var mongoose = require('mongoose');/*引入mongoose模块*/
 var MovieSchema = new mongoose.Schema({/*创建文档集合*/
 	doctor:String,
 	title:String,
@@ -18,7 +18,7 @@ var MovieSchema = new mongoose.Schema({/*创建文档集合*/
 			default:Date.now()
 		}
 	}
-})；
+})
 MovieSchema.pre('svae',function(next){/*每次存数据之前调用该方法*/
 	if(this.isNew){
 		this.meta.createAt = this.meta.updateAt = Date.now();

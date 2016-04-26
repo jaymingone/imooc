@@ -73,7 +73,7 @@ app.get('/movie/:id',function(req,res){
 		// 	flash:"http://player.youku.com/player.php/sid/XNjA1Njc0NTUy/v.swf",
 		// 	summary:"1214124124234"
 		// }
-	    })
+	    });
 	})
 });
 
@@ -93,13 +93,25 @@ app.get('/admin/movie',function(req,res){
 		}
 	})
 });
+// admin update movie 更新电影
+app.get("/admin/update/:id",function(req,res){
+	var id = req.params.id;
+	if(id){
+		Movie.findById(id,function(err,movie){
+			req.render('admin',{
+				title:"imooc 后台更新页面",
+				movie:movie
+			})
+		})
+	}
+})
 // admin post movie存储POST过来的数据
 app.post('/admin/movie/new',function(req,res){
 	var id = req.body.movie._id;
 	var movieObj = req.body.movie;
 	var _movie;
-	if(id !=="undefined"){
-		Movie.findByiD(id,function(err,movie){
+	if(id !==undefined){
+		Movie.findById(id,function(err,movie){
 			if(err){
 				console.log(err);
 			}
@@ -121,23 +133,37 @@ app.post('/admin/movie/new',function(req,res){
 			poster:movieObj.poster,
 			summary:movieObj.summary,
 			flash:movieObj.flash
-		})
+		});
+		_movie.save(function(err,movie){
+			if(err){
+					console.log(err);
+			}
+			res.redirect('/movie/'+movie._id);
+		});
 	}
 });
 // list page 设置路由规则及渲染的页面，和数据的传递
 app.get('/admin/list',function(req,res){
-	res.render('list',{
-		title:"imooc 列表页",
-		movies:{
-			title:"机械战警",
-			_id:1,
-			doctor:"何塞帕迪利尔",
-			country:"美国",
-			year:2014,
-			poster:"http://r3.ykimg.com/05160000530EEB63675839160D0B79D5",
-			language:"英语",
-			flash:"http://player.youku.com/player.php/sid/XNjA1Njc0NTUy/v.swf",
-			summary:"12342142355151155"
+	Movie.fetch(function(err,movies){
+		if(err){
+			console.log(err);
 		}
+
+		res.render('list',{
+			title:"imooc 列表页",
+			movies:movies
+			// movies:{
+			// 	title:"机械战警",
+			// 	_id:1,
+			// 	doctor:"何塞帕迪利尔",
+			// 	country:"美国",
+			// 	year:2014,
+			// 	poster:"http://r3.ykimg.com/05160000530EEB63675839160D0B79D5",
+			// 	language:"英语",
+			// 	flash:"http://player.youku.com/player.php/sid/XNjA1Njc0NTUy/v.swf",
+			// 	summary:"12342142355151155"
+			// }
+		})
 	})
+	
 });
