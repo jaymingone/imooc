@@ -7,7 +7,7 @@ var _ = require('underscore');/*替换老对象的字段用*/
 var Movie = require('./models/movies');/*引入导出的movie模型*/
 var port = process.env.PORT || 3000;/*设置端口号为3000或环境变量的值*/
 var app = express();/*创建WEB服务器实例*/
-mongoose.connect('mongodb://localhost/imooc');/*连接本地数据库*/
+mongoose.connect('mongodb://127.0.0.1:27017/imooc',function(err){if(err){console.log(err)}else{console.log("sucess")}});/*连接本地数据库*/
 app.set('views','./views/pages');/*设置视图的根目录*/
 app.set('view engine','jade');/*设置默认的模板引擎*/
 // app.use(express.bodyParser());/*提交的表单数据格式化用到*/
