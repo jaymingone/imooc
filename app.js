@@ -98,7 +98,7 @@ app.get("/admin/update/:id",function(req,res){
 	var id = req.params.id;
 	if(id){
 		Movie.findById(id,function(err,movie){
-			req.render('admin',{
+			res.render('admin',{
 				title:"imooc 后台更新页面",
 				movie:movie
 			})
