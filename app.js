@@ -107,10 +107,12 @@ app.get("/admin/update/:id",function(req,res){
 })
 // admin post movie存储POST过来的数据
 app.post('/admin/movie/new',function(req,res){
+	console.log(req.body);
+	console.log(req.body.movie);
 	var id = req.body.movie._id;
 	var movieObj = req.body.movie;
 	var _movie;
-	if(id !==undefined){
+	if(id !=="undefined"){
 		Movie.findById(id,function(err,movie){
 			if(err){
 				console.log(err);
