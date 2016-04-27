@@ -5,9 +5,9 @@ $(function(){
 		var tr = $(".item-id-" + id);
 		$.ajax({
 			type:"DELETE",
-			url:"/admin/list?id" + id
-		}).done(function(){
-			if(results.sucess===1){
+			url:"/admin/list?id=" + id
+		}).done(function(results){
+			if(results.success===1){
 				if(tr.length > 0){
 					tr.remove();
 				}
