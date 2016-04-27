@@ -5,11 +5,11 @@ block content
 			table.table.table-hover.table-bordered
 				thead
 					tr
-						th 电影名字
+						th 电影名称
 						th 导演
 						th 国家
 						th 上映年份
-						//- th 录入时间
+						th 录入时间
 						th 查看
 						th 更新
 						th 删除
@@ -20,7 +20,7 @@ block content
 								td #{item.doctor}
 								td #{item.country}
 								td #{item.year}
-								//- td #{moment(item.meta.createdAt).format('MM/DD/YYYY')}
+								td #{moment(item.meta.updateAt).format('MM/DD/YYYY')}
 								td
 									a(target="_blank",href="../movie/#{item._id}") 查看
 								td
