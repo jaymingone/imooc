@@ -11,7 +11,7 @@ mongoose.connect('mongodb://127.0.0.1:27017/imooc',function(err){if(err){console
 app.set('views','./views/pages');/*设置视图的根目录*/
 app.set('view engine','jade');/*设置默认的模板引擎*/
 // app.use(express.bodyParser());/*提交的表单数据格式化用到*/
-app.use(express.static(path.join(__dirname,"public/libs")));/*具体设置静态资源的路径位置*/
+app.use(express.static(path.join(__dirname,"public")));/*具体设置静态资源的路径位置*/
 // app.use(serveStatic('bower_components');
 app.locals.moment = require('moment');/*引入Moment模块格式化本地时间并赋值给app对象的本地对象调用*/
 app.use(bodyParser.urlencoded({ extended:true }));
@@ -170,3 +170,17 @@ app.get('/admin/list',function(req,res){
 	})
 	
 });
+
+// list delete movie
+app.delete("/admin/list",function(req,res){
+	var id = req.query.id;
+	if(id){
+		Movie.remove({_id:id},function(err,movie){
+			if(err){
+				console.log(err);
+			}else{
+				res.json({success:1});
+			};
+		})
+	}
+})
