@@ -1,0 +1,25 @@
+{
+  "name": "Immoc",
+  "homepage": "https://github.com/jaymingone/imooc",
+  "authors": [
+    "limingjie <393366088@qq.com>"
+  ],
+  "description": "imooc movie website",
+  "main": "",
+  "keywords": [
+    "imooc"
+  ],
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "public/libs",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "^3.3.6"
+  }
+}
