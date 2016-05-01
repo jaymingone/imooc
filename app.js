@@ -153,7 +153,7 @@ app.get('/admin/list',function(req,res){
 		}
 
 		res.render('list',{
-			title:"imooc 列表页",
+			title:"imooc 列表页1",
 			movies:movies
 			// movies:{
 			// 	title:"机械战警",
