@@ -39,6 +39,10 @@ console.log('imooc started on port' + port);
 // index page 设置路由规则及渲染的页面，和数据的传递
 app.get('/',function(req,res){
 	console.log(req.session.user);
+	var _user = req.session.user;
+	if(_user){
+		app.locals.user = _user;
+	}
 	Movie.fetch(function(err,movies){
 		if(err){
 			console.log(err);
@@ -283,3 +287,10 @@ app.post('/user/signin',function(req,res){
 		})
 	})
 });
+
+// logout page router
+app.get('/logout',function(req,res){
+	delete req.session.user;
+	delete app.locals.user;
+	req.redirect('/');
+})
