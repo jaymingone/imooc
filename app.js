@@ -8,6 +8,7 @@ var mongoose = require('mongoose');/*引入mongoose模块*/
 // var User = require('./models/user');/*引入导出的user模型*/
 var cookieSession = require('cookie-session');/*cookie-session模块*/
 var cookieParser = require('cookie-parser');/*session地址解析*/
+var logger = require('morgan');/*错误提示用到的中间件*/
 var session = require('express-session');
 var mongoStore = require('connect-mongo')(session);// var mongoStore = require('connect-mongo')(express);/*mongoDb存储会话用的中间件*/
 var dbUrl = 'mongodb://127.0.0.1:27017/imooc'
@@ -35,5 +36,13 @@ app.use(cookieSession({/*Session会话用到的中间件session,用户状态持�
 }));/*用于判读用户是否为登录状态，保存在内存中*/
 app.listen(port);/*监听指定的端口*/
 console.log('imooc started on port' + port);
+
+if('development' === app.get('env')){/*如果当前环境为开发环境及本地*/
+	app.set('showStackError',true);/*设置为打印错误信息*/
+	// app.use(express.logger(':method :url :status'));/*信息的格式*/
+	app.use(logger('dev'));
+	app.locals.pretty = true;/*讲压缩处理格式化的html代码展开*/
+	mongoose.set('debug',true);/*mongoose数据库提示*/
+}
 
 require('./configs/router')(app);
