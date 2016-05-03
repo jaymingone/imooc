@@ -1,12 +1,12 @@
 var mongoose = require('mongoose');/*引入mongoose模块*/
-var bcrype = require('bcrypt-nodejs');
+var bcrypt = require('bcrypt-nodejs');
 var SALT_WORK_FACTOR = 10;/*密码加盐的强度默认也是10*/
 var UserSchema = new mongoose.Schema({/*创建文档集合*/
 	name:{
 		unique:true,
 		type:String,
 	},
-	password:type:String,
+	password:String,
 	meta:{
 		createAt:{
 			type:Date,
@@ -43,6 +43,16 @@ UserSchema.pre('save',function(next){/*每次存数据之前调用该方法*/
 	})
 });
 
+UserSchema.methods ={
+	comparePassword:function(_password,cb){
+		bcrypt.compare(_password,this.password,function(err,isMatch){
+			if(err){
+				return cb(err);
+			}
+			cb(null,isMatch);
+		})
+	}
+}
 UserSchema.statics = {/*设置静态方法，实列化后才可使用这些方法*/
 	fetch:function(cb){
 		return this

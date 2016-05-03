@@ -5,6 +5,7 @@ var bodyParser = require('body-parser');/**/
 var mongoose = require('mongoose');/*引入mongoose模块*/
 var _ = require('underscore');/*替换老对象的字段用*/
 var Movie = require('./models/movies');/*引入导出的movie模型*/
+var User = require('./models/user');/*引入导出的user模型*/
 var port = process.env.PORT || 3000;/*设置端口号为3000或环境变量的值*/
 var app = express();/*创建WEB服务器实例*/
 mongoose.connect('mongodb://127.0.0.1:27017/imooc',function(err){if(err){console.log(err)}else{console.log("sucess")}});/*连接本地数据库*/
@@ -183,4 +184,84 @@ app.delete("/admin/list",function(req,res){
 			};
 		})
 	}
-})
+});
+// 用户注册模块路由设置
+app.post('/user/signup',function(req,res){
+	var _user = req.body.user;
+	// var _user = req.param('user');
+	// var user = new User(_user);
+	User.find({name:_user.name},function(err,user){/*避免注册用户名重复*/
+		if(err){
+			console.log(err);
+		}
+		if(user){
+			console.log('用户已存在');
+			return res.redirect('/');
+		}else{
+			console.log('用户不存在并创建新用户');
+			var user = new User(_user);
+			user.save(function(err,user){
+			if(err){
+				console.log(err);
+			}
+			console.log(user);
+			res.redirect('/admin/userlist');
+		    });
+		}
+	});
+	
+	/*console.log(_user);*/
+});
+
+
+// userlist page 设置路由规则及渲染的页面，和数据的传递
+app.get('/admin/userlist',function(req,res){
+	User.fetch(function(err,users){
+		if(err){
+			console.log(err);
+		}
+
+		res.render('userlist',{
+			title:"imooc 用户列表页",
+			users:users
+			// movies:{
+			// 	title:"机械战警",
+			// 	_id:1,
+			// 	doctor:"何塞帕迪利尔",
+			// 	country:"美国",
+			// 	year:2014,
+			// 	poster:"http://r3.ykimg.com/05160000530EEB63675839160D0B79D5",
+			// 	language:"英语",
+			// 	flash:"http://player.youku.com/player.php/sid/XNjA1Njc0NTUy/v.swf",
+			// 	summary:"12342142355151155"
+			// }
+		})
+	})
+	
+});
+
+// signin登录模块路由设置
+app.post('/user/signin',function(req,res){
+	var _user = req.body.user;
+	var name = _user.name;
+	var password = _user.password;
+	User.findOne({name:_user.name},function(err,user){
+		if(err){
+			console.log(err);
+		}
+		if(!user){
+			return res.redirect('/');
+		}
+		user.comparePassword(password,function(err,isMatch){
+			if(err){
+				console.log(err);
+			}
+			if(isMatch){
+				console.log('PASSWORD IS MATCH!')
+				return res.redirect('/');
+			}else{
+				console.log('password is not match');
+			}
+		})
+	})
+});
