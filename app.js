@@ -211,22 +211,32 @@ app.post('/user/signup',function(req,res){
 	var _user = req.body.user;
 	// var _user = req.param('user');
 	// var user = new User(_user);
-	User.find({name:_user.name},function(err,user){/*避免注册用户名重复*/
-		if(err){
+	// user.save(function(err,user){
+	// 	if(err){
+	// 		console.log(err)
+	// 	}
+	// 	res.redirect('/');
+	// })
+	User.find({name: _user.name},function(err,user){/*避免注册用户名重复*/
+
+		if (err){
 			console.log(err);
 		}
-		if(user){
+		if (user){
 			console.log('用户已存在');
+			console.log(1)
 			return res.redirect('/');
-		}else{
+
+		}
+		else{
 			console.log('用户不存在并创建新用户');
 			var user = new User(_user);
 			user.save(function(err,user){
-			if(err){
-				console.log(err);
-			}
-			console.log(user);
-			res.redirect('/admin/userlist');
+				if(err){
+					console.log(err);
+				}
+				console.log(user);
+				res.redirect('/admin/userlist');
 		    });
 		}
 	});
@@ -292,5 +302,5 @@ app.post('/user/signin',function(req,res){
 app.get('/logout',function(req,res){
 	delete req.session.user;
 	delete app.locals.user;
-	req.redirect('/');
+	res.redirect('/');
 })
