@@ -15,7 +15,7 @@ var dbUrl = 'mongodb://127.0.0.1:27017/imooc'
 var port = process.env.PORT || 3000;/*设置端口号为3000或环境变量的值*/
 var app = express();/*创建WEB服务器实例*/
 mongoose.connect(dbUrl,function(err){if(err){console.log(err)}else{console.log("sucess")}});/*连接本地数据库*/
-app.set('views','./views/pages');/*设置视图的根目录*/
+app.set('views','./app/views/pages');/*设置视图的根目录*/
 app.set('view engine','jade');/*设置默认的模板引擎*/
 // app.use(express.bodyParser());/*提交的表单数据格式化用到*/
 app.use(express.static(path.join(__dirname,"public/")));/*具体设置静态资源的路径位置*/
