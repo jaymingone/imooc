@@ -11,15 +11,13 @@
 		// 	res.redirect('/');
 		// })
 		User.find({name: _user.name},function(err,user){/*避免注册用户名重复*/
-
 			if (err){
-				console.log(err);
+				console.log(err);/*可用于404，500异常错误*/
 			}
-			if (user){
+			if (user.name!== undefined){/*此处不可用user直接做判断*/
 				console.log('用户已存在');
-				console.log(1)
-				return res.redirect('/');
-
+				console.log(typeof user.name);
+				return res.redirect('/signin');
 			}
 			else{
 				console.log('用户不存在并创建新用户');
@@ -49,7 +47,7 @@
 				console.log(err);
 			}
 			if(!user){
-				return res.redirect('/');
+				return res.redirect('/signup');
 			}
 			user.comparePassword(password,function(err,isMatch){
 				if(err){
@@ -60,11 +58,26 @@
 					req.session.user = user;
 					return res.redirect('/');
 				}else{
+					return res.redirect('/signin');
 					console.log('password is not match');
 				}
 			})
 		})
 	};
+	// 注册页面的跳转
+	exports.showSignup = function(req,res){
+		res.render('signup',{
+			title:'注册页面',
+			// users:users
+		})
+	}
+	// 登录页面的跳转
+	exports.showSignin = function(req,res){
+		res.render('signin',{
+			title:'登录页面',
+			// users:users
+		})
+	}
 
 	// logout page router
 	exports.logout = function(req,res){

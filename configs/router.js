@@ -6,7 +6,7 @@ module.exports=function(app){
 	app.use(function(req,res,next){
 		var _user = req.session.user;
 		app.locals.user = _user;
-		return next();
+		next();
 	});
 	// 首页相关的路由到app/contorller/index.js
 	app.get('/',Index.index);
@@ -15,6 +15,8 @@ module.exports=function(app){
 	app.post('/user/signin',User.signin);
 	app.get('/logout',User.logout);
 	app.get('/admin/userlist',User.list);
+	app.get('/signin',User.showSignin);
+	app.get('/signup',User.showSignup);
 	// 电影操作相关的路由到app/contorller/movie.js
 	app.get('/movie/:id',Movie.detail);
 	app.get('/admin/movie',Movie.new);
