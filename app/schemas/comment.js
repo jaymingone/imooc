@@ -1,7 +1,7 @@
 var mongoose = require('mongoose');/*引入mongoose模块*/
 var Schema = mongoose.Schema;
 var ObjectId = Schema.Types.ObjectId;
-var CommentSchema = new mongoose.Schema({/*创建文档集合*/
+var CommentSchema = new Schema({/*创建文档集合*/
 	movie:{type:ObjectId,ref:'Movie'},
 	from:{type:ObjectId,ref:'User'},
 	to:{type:ObjectId,ref:'User'},

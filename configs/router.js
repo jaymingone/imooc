@@ -25,4 +25,6 @@ module.exports=function(app){
 	app.get('/admin/list/',User.signinRequired,User.adminRequired,Movie.list);
 	app.delete('/admin/list',User.signinRequired,User.adminRequired,Movie.del);
 }
+	// comment
+	app.post('/admin/comment',User.signinRequired,Comment.save);
 	
