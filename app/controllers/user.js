@@ -112,3 +112,21 @@
 		})
 		
 	};
+
+	// 权限控制的中间件midware for user 登录权限
+	exports.signinRequired = function(req,res,next){
+		var user = req.session.user;
+		if(!user){
+			return res.redirect('/signin');
+		}
+		next();
+	}
+	// 权限控制的中间件midware for admin 管理员权限
+	exports.adminRequired = function(req,res,next){
+		var user = req.session.user;
+		if(user.role<=10){
+			return res.redirect('/signin');
+		}
+		next();
+	}
+

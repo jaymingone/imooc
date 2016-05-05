@@ -14,15 +14,15 @@ module.exports=function(app){
 	app.post('/user/signup',User.signup);
 	app.post('/user/signin',User.signin);
 	app.get('/logout',User.logout);
-	app.get('/admin/userlist',User.list);
+	app.get('/admin/userlist',User.signinRequired,User.adminRequired,User.list);
 	app.get('/signin',User.showSignin);
 	app.get('/signup',User.showSignup);
 	// 电影操作相关的路由到app/contorller/movie.js
 	app.get('/movie/:id',Movie.detail);
-	app.get('/admin/movie',Movie.new);
-	app.get('/admin/update/:id',Movie.update);
-	app.post('/admin/movie/new',Movie.save);
-	app.get('/admin/list/',Movie.list);
-	app.delete('/admin/list',Movie.del);
+	app.get('/admin/movie',User.signinRequired,User.adminRequired,Movie.new);
+	app.get('/admin/update/:id',User.signinRequired,User.adminRequired,Movie.update);
+	app.post('/admin/movie/new',User.signinRequired,User.adminRequired,Movie.save);
+	app.get('/admin/list/',User.signinRequired,User.adminRequired,Movie.list);
+	app.delete('/admin/list',User.signinRequired,User.adminRequired,Movie.del);
 }
 	

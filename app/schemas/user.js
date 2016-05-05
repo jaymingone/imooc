@@ -7,6 +7,10 @@ var UserSchema = new mongoose.Schema({/*创建文档集合*/
 		type:String,
 	},
 	password:String,
+	role:{
+		type:Number,
+		default:0
+	},/*admin super admin*/
 	meta:{
 		createAt:{
 			type:Date,
