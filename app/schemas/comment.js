@@ -4,7 +4,11 @@ var ObjectId = Schema.Types.ObjectId;
 var CommentSchema = new Schema({/*创建文档集合*/
 	movie:{type:ObjectId,ref:'Movie'},
 	from:{type:ObjectId,ref:'User'},
+	reply:[{
 	to:{type:ObjectId,ref:'User'},
+	from:{type:ObjectId,ref:'User'},
+	content:String
+	}],
 	content:String,
 	meta:{
 		createAt:{

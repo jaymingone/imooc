@@ -2,15 +2,33 @@
 	var Comment = require('../models/comment');/*引入导出的movie模型*/
 	// comment
 	exports.save = function(req,res){
-		var _comment = req.body.user;
+		var _comment = req.body.comment;
 		var movieId = _comment.movie;
-		var comment = new Comment(_comment);
-		comment.save(function(err,movie){
-			if(err){
-				console.log(err);
-			}
-			res.redirect('/movie/'+movieId);
-		})
+		if(_comment.cid){
+			Comment.findById(_comment.cid,function(err,comment){
+				var reply = {
+					from:_comment.from,
+					to:_comment.tid,
+					content:_comment.content
+				}
+				comment.reply.push(reply);
+				comment.save(function(err,comment){
+					if(err){
+						console.lgo(err);
+					}
+					res.redirect('/movie/'+movieId);
+				})
+			})
+		}else{
+			var comment = new Comment(_comment);
+			comment.save(function(err,comment){
+				if(err){
+					console.log(err);
+				}
+				res.redirect('/movie/'+movieId);
+			})
+			
+		}
 	};
 	// list page 设置路由规则及渲染的页面，和数据的传递
 	// exports.list = function(req,res){

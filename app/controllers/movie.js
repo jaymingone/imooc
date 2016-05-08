@@ -1,23 +1,32 @@
 	var _ = require('underscore');/*替换老对象的字段用*/
 	var Movie = require('../models/movies');/*引入导出的movie模型*/
+	var Comment = require('../models/Comment')
 	// detail page 设置路由规则及渲染的页面，和数据的传递
 	exports.detail = function(req,res){
 		var id = req.params.id;
 		Movie.findById(id,function(err,movie){
-			res.render('detail',{
-			title:"imooc" + movie.title,
-			movie:movie
-			// movie:{
-			// 	doctor:"何塞 帕迪利亚",
-			// 	country:"美国",
-			// 	title:"机械战警",
-			// 	year:2014,
-			// 	poster:"http://r3.ykimg.com/05160000530EEB63675839160D0B79D5",
-			// 	language:"英语",
-			// 	flash:"http://player.youku.com/player.php/sid/XNjA1Njc0NTUy/v.swf",
-			// 	summary:"1214124124234"
-			// }
-		    });
+			Comment
+			.find({movie:id})
+			.populate('from','name')
+			.populate('reply.from reply.to','name')
+			.exec(function(err,comments){
+				res.render('detail',{
+				title:"imooc" + movie.title,
+				movie:movie,
+				comments:comments
+				// movie:{
+				// 	doctor:"何塞 帕迪利亚",
+				// 	country:"美国",
+				// 	title:"机械战警",
+				// 	year:2014,
+				// 	poster:"http://r3.ykimg.com/05160000530EEB63675839160D0B79D5",
+				// 	language:"英语",
+				// 	flash:"http://player.youku.com/player.php/sid/XNjA1Njc0NTUy/v.swf",
+				// 	summary:"1214124124234"
+				// }
+			    });
+
+			})
 		})
 	};
 
