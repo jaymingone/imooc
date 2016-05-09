@@ -14,9 +14,9 @@
 				comment.reply.push(reply);
 				comment.save(function(err,comment){
 					if(err){
-						console.lgo(err);
+						console.log(err);
 					}
-					res.redirect('/movie/'+movieId);
+					res.redirect('/movie/' + movieId);
 				})
 			})
 		}else{
@@ -25,7 +25,7 @@
 				if(err){
 					console.log(err);
 				}
-				res.redirect('/movie/'+movieId);
+				res.redirect('/movie/' + movieId);
 			})
 			
 		}

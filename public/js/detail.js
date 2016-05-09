@@ -14,8 +14,8 @@ $(function(){
 				value:toId
 			}).appendTo('#commentForm');	
 		}
-		if($('#comentId').length >0){
-			$('#comentId').val(comentId);
+		if($('#commentId').length >0){
+			$('#commentId').val(commentId);
 		}else{
 			$('<input>').attr({
 				type:'hidden',
