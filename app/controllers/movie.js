@@ -87,7 +87,7 @@
 				})
 			})
 		}else{
-			_movie = new Movie({movieObj
+			_movie = new Movie(movieObj
 				// doctor:movieObj.doctor,
 				// title:movieObj.title,
 				// country:movieObj.country,
@@ -96,7 +96,7 @@
 				// poster:movieObj.poster,
 				// summary:movieObj.summary,
 				// flash:movieObj.flash
-			});
+			);
 			var categoryId = _movie.category;
 			_movie.save(function(err,movie){
 				if(err){
@@ -119,7 +119,7 @@
 			}
 
 			res.render('list',{
-				title:"imooc 列表页1",
+				title:"imooc 列表页",
 				movies:movies
 				// movies:{
 				// 	title:"机械战警",
