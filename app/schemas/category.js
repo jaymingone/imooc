@@ -1,19 +1,10 @@
 var mongoose = require('mongoose');/*引入mongoose模块*/
 var Schema = mongoose.Schema;
 var ObjectId = Schema.Types.ObjectId;
-var MovieSchema = new Schema({/*创建文档集合*/
-	doctor:String,
-	title:String,
-	language:String,
-	country:String,
-	summary:String,
-	flash:String,
-	poster:String,
-	year:Number,
-	category:{
-		type:ObjectId,
-		ref:'Category'
-	},
+var CatetorySchema = new Schema({/*创建文档集合*/
+	name:String,
+	movies:[{type:ObjectId,ref:'Movie'}],
+	
 	meta:{
 		createAt:{
 			type:Date,
@@ -25,7 +16,7 @@ var MovieSchema = new Schema({/*创建文档集合*/
 		}
 	}
 })
-MovieSchema.pre('save',function(next){/*每次存数据之前调用该方法*/
+CatetorySchema.pre('save',function(next){/*每次存数据之前调用该方法*/
 	if(this.isNew){
 		this.meta.createAt = this.meta.updateAt = Date.now();
 	}else{
@@ -34,7 +25,7 @@ MovieSchema.pre('save',function(next){/*每次存数据之前调用该方法*/
 	next();
 });
 
-MovieSchema.statics = {/*设置静态方法，实列化后才可使用这些方法*/
+CatetorySchema.statics = {/*设置静态方法，实列化后才可使用这些方法*/
 	fetch:function(cb){
 		return this
 			.find({})
@@ -48,4 +39,4 @@ MovieSchema.statics = {/*设置静态方法，实列化后才可使用这些方�
 	}
 };
 
-module.exports = MovieSchema;/*导出模块*/
+module.exports = CatetorySchema;/*导出模块*/

@@ -2,6 +2,7 @@ var Index = require('../app/controllers/index');/*首页的控制器文件*/
 var Movie = require('../app/controllers/movie');/*引入导出的movie控制器*/
 var User = require('../app/controllers/user');/*引入导出的user控制器*/
 var Comment = require('../app/controllers/comment');/*引入导出的user控制器*/
+var Category = require('../app/controllers/category');/*引入导出的user控制器*/
 module.exports=function(app){
 	//  会话持久逻辑预处理
 	app.use(function(req,res,next){
@@ -27,6 +28,10 @@ module.exports=function(app){
 	app.delete('/admin/list',User.signinRequired,User.adminRequired,Movie.del);
 	// comment
 	app.post('/user/comment',User.signinRequired,Comment.save);
+	// Category
+	app.get('/admin/category/new',User.signinRequired,User.adminRequired,Category.new);
+	app.post('/admin/category',User.signinRequired,User.adminRequired,Category.save);
+	app.get('/admin/category/list',User.signinRequired,User.adminRequired,Category.list);
 }
 	
 	

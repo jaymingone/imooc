@@ -1,6 +1,7 @@
 	var _ = require('underscore');/*替换老对象的字段用*/
 	var Movie = require('../models/movies');/*引入导出的movie模型*/
-	var Comment = require('../models/Comment')
+	var Comment = require('../models/comment')
+	var Category = require('../models/category')
 	// detail page 设置路由规则及渲染的页面，和数据的传递
 	exports.detail = function(req,res){
 		var id = req.params.id;
@@ -32,18 +33,21 @@
 
 	// admin page 设置路由规则及渲染的页面，和数据的传递
 	exports.new = function(req,res){
-		res.render('admin',{
-			title:"imooc 后台录入页",
-			movie:{
-				title:"",
-				doctor:"",
-				country:"",
-				year:"",
-				poster:"",
-				flash:"",
-				summary:"",
-				language:""
-			}
+		Category.find({},function(err,categories){
+			res.render('admin',{
+				title:"imooc 后台录入页",
+				categories:categories,
+				movie:{
+					title:"",
+					doctor:"",
+					country:"",
+					year:"",
+					poster:"",
+					flash:"",
+					summary:"",
+					language:""
+				}
+			})	
 		})
 	};
 	// admin update movie 更新电影
@@ -51,9 +55,13 @@
 		var id = req.params.id;
 		if(id){
 			Movie.findById(id,function(err,movie){
-				res.render('admin',{
-					title:"imooc 后台更新页面",
-					movie:movie
+				Category.find({},function(err,categories){
+
+					res.render('admin',{
+						title:"imooc 后台更新页面",
+						movie:movie,
+						categories:categories
+					})
 				})
 			})
 		}
@@ -65,7 +73,7 @@
 		var id = req.body.movie._id;
 		var movieObj = req.body.movie;
 		var _movie;
-		if(id !=="undefined"){
+		if(id){
 			Movie.findById(id,function(err,movie){
 				if(err){
 					console.log(err);
@@ -79,21 +87,27 @@
 				})
 			})
 		}else{
-			_movie = new Movie({
-				doctor:movieObj.doctor,
-				title:movieObj.title,
-				country:movieObj.country,
-				language:movieObj.language,
-				year:movieObj.year,
-				poster:movieObj.poster,
-				summary:movieObj.summary,
-				flash:movieObj.flash
+			_movie = new Movie({movieObj
+				// doctor:movieObj.doctor,
+				// title:movieObj.title,
+				// country:movieObj.country,
+				// language:movieObj.language,
+				// year:movieObj.year,
+				// poster:movieObj.poster,
+				// summary:movieObj.summary,
+				// flash:movieObj.flash
 			});
+			var categoryId = _movie.category;
 			_movie.save(function(err,movie){
 				if(err){
 						console.log(err);
 				}
-				res.redirect('/movie/'+movie._id);
+				Category.findById(categoryId,function(err,category){
+					category.movies.push(movie._id);
+					category.save(function(err,category){
+						res.redirect('/movie/'+movie._id);	
+					})
+				})
 			});
 		}
 	};
