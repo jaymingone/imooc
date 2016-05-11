@@ -3,14 +3,29 @@
 var Movie = require('../models/movies');/*引入导出的movie模型*/
 var Category = require('../models/category');/*引入导出的catatory模型*/
 	exports.index=function(req,res){
-		console.log(req.session.user);
+		// console.log(req.session.user);
 		Category
 			.find({})
-			.populate({path:'movies',select: 'title poster',options:{limit:5}})
+			.populate({path:'movies',select:'title poster',options:{limit:5}})
 			.exec(function(err,categories){
 				if(err){
 					console.log(err);
 				}
+					// var map = {}
+			  //       for (i in categories) {
+			  //           map[categories[i]._id] = i
+			  //           categories[i].movies=[]
+			  //       }
+         
+		   //      Movie.find({}, function (err, movies) {
+		   //          for (i in movies) {
+		   //              categories[map[movies[i].category]].movies.push(movies[i])
+		   //          }
+		   //          res.render('index', {
+		   //              title: 'imooc 首页',
+		   //              categories: categories
+		   //          })
+		   //      })
 				res.render('index',{
 					title:'imooc 首页',
 					categories:categories
