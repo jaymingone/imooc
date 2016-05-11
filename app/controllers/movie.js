@@ -105,7 +105,11 @@
 				Category.findById(categoryId,function(err,category){
 					category.movies.push(movie._id);
 					category.save(function(err,category){
-						res.redirect('/movie/'+movie._id);	
+						movie.category = category._id;
+						movie.save(function(err,movie){
+							res.redirect('/movie/'+movie._id);
+						})
+							
 					})
 				})
 			});
