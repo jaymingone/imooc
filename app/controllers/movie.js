@@ -73,18 +73,46 @@
 		var id = req.body.movie._id;
 		var movieObj = req.body.movie;
 		var _movie;
+		var categoryId = movieObj.category;
+		// var oldCategory;
+
+		// if(oldCategory != _movie.category){
+		// 	//1、修改前分类电影集合移除这个电影
+		// 	var oldCatgories = Category.findById(oldCategory,function(err,category){
+		// 	var index = category.movies.indexOf(_movie.id);
+		// 	category.movies.splice(index,1)
+		// 	category.save()
+		// 	});
+		// 	//2、修改后分类电影集合添加这个电影
+		// 	 var newCategories = Category.findById(_movie.category,function(err,category){
+		// 	 	category.movies.push(_movie.id);
+		// 	 	category.save();
+		// 	 });
+		// }
+
 		if(id){
 			Movie.findById(id,function(err,movie){
 				if(err){
 					console.log(err);
 				}
-				_movie =_.extend(movie,movieObj);
-				_movie.save(function(err,movie){
-					if(err){
-						console.log(err);
-					}
-					res.redirect('/movie/'+movie._id);
-				})
+				Category.update({_id:movie.category},{$pullAll:{"movies":[id]}},function(err,category){
+				 	_movie=_.extend(movie,movieObj);
+					_movie.save(function(err,movie){
+						if(err){
+							console.log(err);
+						}
+						Category.update({_id:categoryId},{$addToSet:{"movies":id}},function(err,category){
+							res.redirect("/movie/"+movie._id);
+						});
+					});
+				 });
+				// _movie =_.extend(movie,movieObj);
+				// _movie.save(function(err,movie){
+				// 	if(err){
+				// 		console.log(err);
+				// 	}
+				// 	res.redirect('/movie/'+movie._id);
+				// })
 			})
 		}else{
 			_movie = new Movie(movieObj
@@ -108,10 +136,10 @@
 					Category.findById(categoryId,function(err,category){
 						category.movies.push(movie._id);
 						category.save(function(err,category){
-							movie.category = category._id;
-							movie.save(function(err,movie){
+							// movie.category = category._id;
+							// movie.save(function(err,movie){
 								res.redirect('/movie/'+movie._id);
-							})
+							// })
 								
 						})
 					})
