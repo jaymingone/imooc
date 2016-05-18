@@ -24,6 +24,8 @@ app.locals.moment = require('moment');/*引入Moment模块格式化本地时间�
 app.use(bodyParser.urlencoded({extended:true}));
 app.use(bodyParser.json());
 app.use(cookieParser());/*session()需用到的中间件*/
+// app.use(express.multipart());
+app.use(require('connect-multiparty')());
 app.use(cookieSession({/*Session会话用到的中间件session,用户状态持久化到数据库里*/
 	secret:'imooc',
 	store:new mongoStore({

@@ -1,7 +1,9 @@
 	var _ = require('underscore');/*替换老对象的字段用*/
 	var Movie = require('../models/movies');/*引入导出的movie模型*/
-	var Comment = require('../models/comment')
-	var Category = require('../models/category')
+	var Comment = require('../models/comment');
+	var Category = require('../models/category');
+	var fs = require('fs');
+	var path = require('path');
 	// detail page 设置路由规则及渲染的页面，和数据的传递
 	exports.detail = function(req,res){
 		var id = req.params.id;
@@ -66,6 +68,27 @@
 			})
 		}
 	}
+	// admin poster
+	exports.savePoster = function(req,res,next){
+		var posterData = req.files.uploadPoster;
+		var filePath = posterData.path;
+		var originalFilename = posterData.originalFilename;
+		console.log(req.files);
+		if(originalFilename){
+			fs.readFile(filePath,function(err,data){
+				var timestamp = Date.now();
+				var type = posterData.type.split('/')[1];
+				var poster = timestamp +'.'+type;
+				var newPath = path.join(__dirname,'../../','public/upload/'+ poster);
+				fs.writeFile(newPath,data,function(err){
+					req.poster = poster;
+					next();
+				})
+			})
+		}else{
+			next();
+		}
+	}
 	// admin post movie存储POST过来的数据
 	exports.save = function(req,res){
 		console.log(req.body);
@@ -75,7 +98,6 @@
 		var _movie;
 		var categoryId = movieObj.category;
 		// var oldCategory;
-
 		// if(oldCategory != _movie.category){
 		// 	//1、修改前分类电影集合移除这个电影
 		// 	var oldCatgories = Category.findById(oldCategory,function(err,category){
@@ -89,7 +111,9 @@
 		// 	 	category.save();
 		// 	 });
 		// }
-
+		if(req.poster){
+			movieObj.poster = req.poster;
+		}
 		if(id){
 			Movie.findById(id,function(err,movie){
 				if(err){
