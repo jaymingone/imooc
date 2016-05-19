@@ -1,9 +1,9 @@
 // 测试用例
-var cryto = require('crypto');
+var crypto = require('crypto');
 var bcrypt = require('bcrypt-nodejs');
 function getRandomString(len){
 	if(!len)len = 16;
-	return cryto.randomBytes(Math.ceil(len/2)).toString('hex');
+	return crypto.randomBytes(Math.ceil(len/2)).toString('hex');
 }
 var should = require('should');
 var app = require('../../app');
