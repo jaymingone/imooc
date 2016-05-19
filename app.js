@@ -15,6 +15,7 @@ var dbUrl = 'mongodb://127.0.0.1:27017/imooc'
 var port = process.env.PORT || 3000;/*设置端口号为3000或环境变量的值*/
 var app = express();/*创建WEB服务器实例*/
 var fs = require('fs');
+var routers = require('./configs/router');
 // models loadin
 var models_path = __dirname + '/app/models';
 var walk = function(path){
@@ -47,6 +48,7 @@ app.use(cookieParser());/*session()需用到的中间件*/
 app.use(require('connect-multiparty')());
 app.use(cookieSession({/*Session会话用到的中间件session,用户状态持久化到数据库里*/
 	secret:'imooc',
+	cookie:{maxAge:60*1000*60*24*14},
 	store:new mongoStore({
 		url:dbUrl,
 		collection:'sessions'
@@ -56,7 +58,7 @@ app.use(cookieSession({/*Session会话用到的中间件session,用户状态持�
 
 }));/*用于判读用户是否为登录状态，保存在内存中*/
 app.listen(port);/*监听指定的端口*/
-console.log('imooc started on port' + port);
+console.log('imooc 服务是否成功启动－端口号:' + port);
 
 if('development' === app.get('env')){/*如果当前环境为开发环境及本地*/
 	app.set('showStackError',true);/*设置为打印错误信息*/
@@ -66,4 +68,4 @@ if('development' === app.get('env')){/*如果当前环境为开发环境及本�
 	mongoose.set('debug',true);/*mongoose数据库提示*/
 }
 
-require('./configs/router')(app);
+routers(app);
