@@ -10,6 +10,10 @@ var MovieSchema = new Schema({/*创建文档集合*/
 	flash:String,
 	poster:String,
 	year:Number,
+	pv:{
+		type:Number,
+		default:0
+	},
 	category:{
 		type:ObjectId,
 		ref:'Category'

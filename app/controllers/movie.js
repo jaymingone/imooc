@@ -7,6 +7,11 @@
 	// detail page 设置路由规则及渲染的页面，和数据的传递
 	exports.detail = function(req,res){
 		var id = req.params.id;
+		Movie.update({_id:id},{$inc:{pv:1}},function(err){
+			if(err){
+				console.log(err);
+			}
+		});
 		Movie.findById(id,function(err,movie){
 			Comment
 			.find({movie:id})

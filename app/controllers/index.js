@@ -6,7 +6,7 @@ exports.index=function(req,res){
 	// console.log(req.session.user);
 	Category
 		.find({})
-		.populate({path:'movies',select:'title poster',options:{limit:5}})
+		.populate({path:'movies',select:'title poster',options:{limit:6}})
 		.exec(function(err,categories){
 			if(err){
 				console.log(err);
@@ -78,8 +78,8 @@ exports.search = function(req,res){
 		.find({_id:catId})
 		.populate({
 			path:'movies',
-			select:'title poster'
-			// options:{limit:2,skip:index}
+			select:'title poster',
+			options:{limit:count,skip: index}
 		})
 		.exec(function(err,categories){
 			if(err){
@@ -99,7 +99,9 @@ exports.search = function(req,res){
 		})
 	}else{
 		Movie
-			.find({title:new RegExp(q+'.*','i')})
+			.find({title:new RegExp(q+".*","i")})
+			.limit(count)
+			.skip(index)
 			.exec(function(err,movies){
 				if(err){
 					console.log(err);
