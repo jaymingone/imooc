@@ -14,6 +14,25 @@ var mongoStore = require('connect-mongo')(session);// var mongoStore = require('
 var dbUrl = 'mongodb://127.0.0.1:27017/imooc'
 var port = process.env.PORT || 3000;/*设置端口号为3000或环境变量的值*/
 var app = express();/*创建WEB服务器实例*/
+var fs = require('fs');
+// models loadin
+var models_path = __dirname + '/app/models';
+var walk = function(path){
+	fs
+		.readdirSync(path)
+		.forEach(function(file){
+			var newPath = path + '/' + file;
+			var stat = fs.statSync(newPath);
+			if (stat.isFile()){
+				if(/(.*)\.(js|coffee)/.test(file)){
+					require(newPath);
+				}
+			}else if(stat.isDirectory()){
+				walk(newPath);
+			}
+		})
+};
+walk(models_path);
 mongoose.connect(dbUrl,function(err){if(err){console.log(err)}else{console.log("sucess")}});/*连接本地数据库*/
 app.set('views','./app/views/pages');/*设置视图的根目录*/
 app.set('view engine','jade');/*设置默认的模板引擎*/
